@@ -4,12 +4,12 @@ FROM continuumio/miniconda3:4.12.0 AS env-builder
 SHELL ["/bin/bash", "-c"]
 
 ARG MLSERVER_ENV_NAME="mlserver-custom-env" \\
-    MLSERVER_ENV_TARBALL="./envs/base.tar.gz"
+    MLSERVER_ENV_TARBALL="./envs/base.tar.gz" \\
+    CONDA_EXPERIMENTAL_SOLVER=classic conda install -n base conda=22.11.0 \\
+    CONDA_EXPERIMENTAL_SOLVER=classic conda install -n base conda-libmamba-solver=22.12.0
 
-RUN conda update -n base conda -y && \\
-    conda config --add channels conda-forge && \\
+RUN conda config --add channels conda-forge && \\
     conda install conda-pack && \\
-    conda install -n base conda-libmamba-solver && \\
     conda config --set solver libmamba
 
 # The `[]` character range will ensure that Docker doesn't complain if the

@@ -9,7 +9,6 @@ ARG MLSERVER_ENV_NAME="mlserver-custom-env" \\
 RUN conda config --add channels conda-forge && \\
     conda install conda-libmamba-solver && \\
     conda config --set solver libmamba && \\
-    conda config --show && \\
     conda install conda-pack 
     
 

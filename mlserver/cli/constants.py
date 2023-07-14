@@ -1,6 +1,6 @@
 DockerfileName = "Dockerfile"
 DockerfileTemplate = """
-FROM continuumio/miniconda3:4.12.0 AS env-builder
+FROM continuumio/miniconda3:22.11.1 AS env-builder
 SHELL ["/bin/bash", "-c"]
 
 ARG MLSERVER_ENV_NAME="mlserver-custom-env" \\
@@ -8,8 +8,8 @@ ARG MLSERVER_ENV_NAME="mlserver-custom-env" \\
     CONDA_EXPERIMENTAL_SOLVER=classic conda install -n base conda=22.11.0 \\
     CONDA_EXPERIMENTAL_SOLVER=classic conda install -n base conda-libmamba-solver=22.12.0
 
-RUN conda update conda && conda --version && \\
-    conda config --add channels conda-forge && \\
+RUN conda config --add channels conda-forge && \\
+    conda install conda-libmamba-solver && \\
     conda config --set solver libmamba && \\
     conda install conda-pack 
     

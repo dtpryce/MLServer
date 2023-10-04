@@ -73,33 +73,33 @@ opentelemetry-instrumentation-grpc = "^0.39b0"
 datamodel-code-generator = "0.21.0"
 grpcio-tools = "1.48.1"
 tritonclient = {version = "2.32.0", extras = ["http"]}
-pytest = "7.3.1"
-pytest-asyncio = "0.21.0"
+pytest = "7.4.0"
+pytest-asyncio = "0.21.1"
 pytest-mock = "3.11.1"
 pytest-cases = "3.6.14"
 tox = "4.6.3"
 docker = "6.0.1"
-aiohttp = "3.8.4"
+aiohttp = "3.8.5"
 aiohttp-retry = "2.8.3"
 ## Used for FastAPI Async testing
 httpx = "0.24.1"
 kafka-python = "2.0.2"
 tenacity = "8.2.2"
-pyyaml = "6.0"
+pyyaml = "6.0.1"
 
 ## Latest version of conda-pack (0.7.0) is not on PyPi
 ## See https://github.com/conda/conda-pack/issues/219
 conda-pack = {git = "https://github.com/conda/conda-pack", rev = "0.7.0"}
 flake8 = "6.0.0"
 flake8-black = "0.3.6"
-mypy = "1.2.0"
+mypy = "1.5.1"
 mypy-protobuf = "3.1.0"
-types-protobuf = "4.23.0.1"
+types-protobuf = "4.24.0.1"
 types-orjson = "3.6.2"
 types-aiofiles = "23.1.0.4"
 types-requests = "2.28.11.5"
-black = "23.3.0"
-pip-licenses = "4.3.0"
+black = "23.9.1"
+pip-licenses = "4.3.2"
 
 [tool.poetry.group.docker.dependencies]
 protobuf = "3.20.3"
@@ -122,7 +122,7 @@ optional = true
 
 [tool.poetry.group.all-runtimes-dev.dependencies]
 ## Dev dependencies from Alibi-Explain
-requests-mock = "~1.10.0"
+requests-mock = "~1.11.0"
 types-requests = "~2.28.11.5"
 
 ## Dev dependencies from Alibi-Detect
@@ -130,13 +130,13 @@ tensorflow = "~2.12.0"
 
 ## Dev dependencies from MLflow
 torch = "2.0.0"
-pytorch-lightning = "2.0.4"
-torchmetrics = "0.11.4"
+pytorch-lightning = "2.0.9.post0"
+torchmetrics = "1.1.0"
 torchvision = "0.15.1"
-mlflow = "2.4.1"
+mlflow = "2.6.0"
 
 ## Dev dependencies from HuggingFace
-transformers = "~4.30.0"
+transformers = ">=4.30,<4.34"
 
 [tool.poetry.group.docs]
 optional = true
@@ -145,9 +145,9 @@ optional = true
 Sphinx = "6.2.1"
 sphinx_material = "0.0.35"
 readthedocs-sphinx-search = "0.3.1"
-myst-parser = "1.0.0"
+myst-parser = "2.0.0"
 sphinxcontrib-bibtex = "2.5.0"
-autodoc_pydantic = "1.8.0"
+autodoc_pydantic = "1.9.0"
 sphinx-click = "4.4.0"
 sphinx_design = "0.4.1"
 sphinx-autobuild = "2021.3.14"

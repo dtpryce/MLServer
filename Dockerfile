@@ -1,7 +1,7 @@
 FROM python:3.10-slim AS wheel-builder
 SHELL ["/bin/bash", "-l", "-c"]
 
-ARG POETRY_VERSION="1.4.2"
+ARG POETRY_VERSION="1.6.1"
 
 COPY ./hack/build-wheels.sh ./hack/build-wheels.sh
 COPY ./mlserver ./mlserver
@@ -28,8 +28,8 @@ FROM registry.access.redhat.com/ubi9/ubi-minimal
 SHELL ["/bin/bash", "-c"]
 
 ARG PYTHON_VERSION=3.10.11
-ARG CONDA_VERSION=23.1.0
-ARG MINIFORGE_VERSION=${CONDA_VERSION}-1
+ARG CONDA_VERSION=23.3.1
+ARG MINIFORGE_VERSION=${CONDA_VERSION}-0
 ARG RUNTIMES="all"
 
 # Set a few default environment variables, including `LD_LIBRARY_PATH`

@@ -73,11 +73,11 @@ class RESTServer:
     def _get_config(self):
         kwargs = {}
 
-        if self._settings._custom_rest_server_settings:
+        if self._settings.custom_rest_server_settings:
             logger.warning(
                 "REST custom configuration is out of support. Use as your own risk"
             )
-            kwargs.update(self._settings._custom_rest_server_settings)
+            kwargs.update(self.settings._custom_rest_server_settings)
 
         kwargs.update(
             {

@@ -24,6 +24,7 @@ HANDLED_SIGNALS = [signal.SIGINT, signal.SIGTERM, signal.SIGQUIT]
 class MLServer:
     def __init__(self, settings: Settings):
         self._settings = settings
+        logger.info(settings)
         self._inference_pool = None
         on_model_load = [
             self.add_custom_handlers,

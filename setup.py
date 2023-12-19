@@ -37,15 +37,20 @@ setup(
     url="https://github.com/SeldonIO/MLServer.git",
     author="Seldon Technologies Ltd.",
     author_email="hello@seldon.io",
+    classifiers=["Operating System :: POSIX", "Operating System :: MacOS"],
     description="ML server",
+    include_package_data=True,
     packages=find_packages(exclude=["tests", "tests.*"]),
     install_requires=[
         "click",
         # 0.89.0: https://github.com/tiangolo/fastapi/issues/5861
-        "fastapi<=0.89.1, !=0.89.0",
+        "fastapi >=0.88.0, <=0.89.1, !=0.89.0",
         "python-dotenv",
         "grpcio",
-        "importlib-metadata;python_version<'3.8'",
+        # The importlib-resources backport is required to use some
+        # functionality added in Python 3.10
+        # https://setuptools.pypa.io/en/latest/userguide/datafiles.html#accessing-data-files-at-runtime
+        "importlib-resources",
         "numpy",
         "pandas",
         "protobuf",

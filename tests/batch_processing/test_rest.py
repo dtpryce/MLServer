@@ -5,14 +5,13 @@ import pytest
 
 from mlserver.batch_processing import process_batch
 from mlserver.settings import Settings
-from tempfile import TemporaryDirectory
-
+from mlserver import MLModel
 
 from ..utils import RESTClient
 
 
 async def test_single(
-    tmp_dir: TemporaryDirectory,
+    tmp_path: str,
     rest_client: RESTClient,
     settings: Settings,
     single_input: str,
@@ -20,7 +19,7 @@ async def test_single(
     await rest_client.wait_until_ready()
     model_name = "sum-model"
     url = f"{settings.host}:{settings.http_port}"
-    output_file = os.path.join(tmp_dir.name, "output.txt")
+    output_file = os.path.join(tmp_path, "output.txt")
 
     await process_batch(
         model_name=model_name,
@@ -54,8 +53,52 @@ async def test_single(
         raise RuntimeError(f"Response id is not a valid UUID; got {response['id']}")
 
 
+async def test_bytes(
+    tmp_path: str,
+    echo_model: MLModel,
+    rest_client: RESTClient,
+    settings: Settings,
+    bytes_input: str,
+):
+    await rest_client.wait_until_ready()
+    model_name = "echo-model"
+    url = f"{settings.host}:{settings.http_port}"
+    output_file = os.path.join(tmp_path, "output.txt")
+
+    await process_batch(
+        model_name=model_name,
+        url=url,
+        workers=1,
+        retries=1,
+        input_data_path=bytes_input,
+        output_data_path=output_file,
+        binary_data=False,
+        batch_size=1,
+        transport="rest",
+        request_headers={},
+        batch_interval=0,
+        batch_jitter=0,
+        timeout=60,
+        use_ssl=False,
+        insecure=False,
+        verbose=True,
+        extra_verbose=True,
+    )
+
+    with open(output_file) as f:
+        response = json.load(f)
+
+    assert response["outputs"][0]["data"] == ["a", "b", "c"]
+    assert response["id"] is not None and response["id"] != ""
+    assert response["parameters"]["batch_index"] == 0
+    try:
+        _ = UUID(response["id"])
+    except ValueError:
+        raise RuntimeError(f"Response id is not a valid UUID; got {response['id']}")
+
+
 async def test_invalid(
-    tmp_dir: TemporaryDirectory,
+    tmp_path: str,
     rest_client: RESTClient,
     settings: Settings,
     invalid_input: str,
@@ -63,7 +106,7 @@ async def test_invalid(
     await rest_client.wait_until_ready()
     model_name = "sum-model"
     url = f"{settings.host}:{settings.http_port}"
-    output_file = os.path.join(tmp_dir.name, "output.txt")
+    output_file = os.path.join(tmp_path, "output.txt")
 
     await process_batch(
         model_name=model_name,
@@ -106,7 +149,7 @@ async def test_invalid(
 
 
 async def test_invalid_among_many(
-    tmp_dir: TemporaryDirectory,
+    tmp_path: str,
     rest_client: RESTClient,
     settings: Settings,
     invalid_among_many: str,
@@ -114,7 +157,7 @@ async def test_invalid_among_many(
     await rest_client.wait_until_ready()
     model_name = "sum-model"
     url = f"{settings.host}:{settings.http_port}"
-    output_file = os.path.join(tmp_dir.name, "output.txt")
+    output_file = os.path.join(tmp_path, "output.txt")
 
     await process_batch(
         model_name=model_name,
@@ -175,7 +218,7 @@ async def test_invalid_among_many(
 @pytest.mark.parametrize("workers", [1, 2, 5, 6])
 async def test_many(
     workers: int,
-    tmp_dir: TemporaryDirectory,
+    tmp_path: str,
     rest_client: RESTClient,
     settings: Settings,
     many_input: str,
@@ -183,7 +226,7 @@ async def test_many(
     await rest_client.wait_until_ready()
     model_name = "sum-model"
     url = f"{settings.host}:{settings.http_port}"
-    output_file = os.path.join(tmp_dir.name, "output.txt")
+    output_file = os.path.join(tmp_path, "output.txt")
 
     await process_batch(
         model_name=model_name,
@@ -227,7 +270,7 @@ async def test_many(
 @pytest.mark.parametrize("workers", [1, 2, 5, 6])
 async def test_many_batch(
     workers: int,
-    tmp_dir: TemporaryDirectory,
+    tmp_path: str,
     rest_client: RESTClient,
     settings: Settings,
     many_input: str,
@@ -235,7 +278,7 @@ async def test_many_batch(
     await rest_client.wait_until_ready()
     model_name = "sum-model"
     url = f"{settings.host}:{settings.http_port}"
-    output_file = os.path.join(tmp_dir.name, "output.txt")
+    output_file = os.path.join(tmp_path, "output.txt")
 
     await process_batch(
         model_name=model_name,
@@ -280,7 +323,7 @@ async def test_many_batch(
 
 
 async def test_single_with_id(
-    tmp_dir: TemporaryDirectory,
+    tmp_path: str,
     rest_client: RESTClient,
     settings: Settings,
     single_input_with_id: str,
@@ -288,7 +331,7 @@ async def test_single_with_id(
     await rest_client.wait_until_ready()
     model_name = "sum-model"
     url = f"{settings.host}:{settings.http_port}"
-    output_file = os.path.join(tmp_dir.name, "output.txt")
+    output_file = os.path.join(tmp_path, "output.txt")
 
     await process_batch(
         model_name=model_name,

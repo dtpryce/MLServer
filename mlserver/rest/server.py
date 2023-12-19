@@ -77,7 +77,7 @@ class RESTServer:
             logger.warning(
                 "REST custom configuration is out of support. Use as your own risk"
             )
-            kwargs.update(self.settings._custom_rest_server_settings)
+            kwargs.update(self.settings.custom_rest_server_settings)
 
         kwargs.update(
             {

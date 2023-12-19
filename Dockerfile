@@ -3,9 +3,11 @@ SHELL ["/bin/bash", "-l", "-c"]
 
 COPY ./hack/build-wheels.sh ./hack/build-wheels.sh
 COPY ./mlserver ./mlserver
+COPY ./openapi ./openapi
 COPY ./runtimes ./runtimes
 COPY \
     setup.py \
+    MANIFEST.in \
     README.md \
     .
 
@@ -16,16 +18,23 @@ RUN ./hack/build-wheels.sh /opt/mlserver/dist
 FROM registry.access.redhat.com/ubi9/ubi-minimal
 SHELL ["/bin/bash", "-c"]
 
-ARG PYTHON_VERSION=3.8.13
-ARG CONDA_VERSION=4.13.0
-ARG MINIFORGE_VERSION=${CONDA_VERSION}-1
+ARG PYTHON_VERSION=3.8.16
+ARG CONDA_VERSION=22.11.1
+ARG MINIFORGE_VERSION=${CONDA_VERSION}-4
 ARG RUNTIMES="all"
 
+# Set a few default environment variables, including `LD_LIBRARY_PATH`
+# (required to use GKE's injected CUDA libraries).
+# NOTE: When updating between major Python versions make sure you update the
+# `/opt/conda` path within `LD_LIBRARY_PATH`.
 ENV MLSERVER_MODELS_DIR=/mnt/models \
     MLSERVER_ENV_TARBALL=/mnt/models/environment.tar.gz \
     MLSERVER_PATH=/opt/mlserver \
     CONDA_PATH=/opt/conda \
-    PATH=/opt/mlserver/.local/bin:/opt/conda/bin:$PATH
+    PATH=/opt/mlserver/.local/bin:/opt/conda/bin:$PATH \
+    LD_LIBRARY_PATH=/usr/local/nvidia/lib64:/opt/conda/lib/python3.8/site-packages/nvidia/cuda_runtime/lib:$LD_LIBRARY_PATH \
+    TRANSFORMERS_CACHE=/opt/mlserver/.cache \
+    NUMBA_CACHE_DIR=/opt/mlserver/.cache
 
 # Install some base dependencies required for some libraries
 RUN microdnf update -y && \
@@ -65,11 +74,14 @@ RUN useradd -u 1000 -s /bin/bash mlserver -d $MLSERVER_PATH && \
     chmod -R 776 $MLSERVER_PATH
 
 COPY --from=wheel-builder /opt/mlserver/dist ./dist
+COPY ./requirements/docker.txt ./requirements/docker.txt
 # NOTE: if runtime is "all" we install mlserver-<version>-py3-none-any.whl
 # we have to use this syntax to return the correct file: $(ls ./dist/mlserver-*.whl)
 # NOTE: Temporarily excluding mllib from the main image due to:
 #   CVE-2022-25168
 #   CVE-2022-42889
+# NOTE: Removing explicitly requirements.txt file from spaCy's test
+# dependencies causing false positives in Snyk.
 RUN . $CONDA_PATH/etc/profile.d/conda.sh && \
     pip install --upgrade pip wheel setuptools && \
     if [[ $RUNTIMES == "all" ]]; then \
@@ -87,7 +99,10 @@ RUN . $CONDA_PATH/etc/profile.d/conda.sh && \
             pip install $_wheel; \
         done \
     fi && \
-    pip install $(ls "./dist/mlserver-"*.whl)
+    pip install $(ls "./dist/mlserver-"*.whl) && \
+    pip install -r ./requirements/docker.txt && \
+    rm -f /opt/conda/lib/python3.8/site-packages/spacy/tests/package/requirements.txt && \
+    rm -rf /root/.cache/pip
 
 COPY ./licenses/license.txt .
 COPY ./licenses/license.txt /licenses/

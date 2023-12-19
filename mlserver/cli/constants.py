@@ -27,7 +27,7 @@ RUN mkdir $(dirname $MLSERVER_ENV_TARBALL); \\
             conda env create \
                 --name $MLSERVER_ENV_NAME \\
                 --file $envFile; \\
-            conda-pack --ignore-missing-files \
+            conda-pack --ignore-missing-files --quiet \
                 -n $MLSERVER_ENV_NAME \\
                 -o $MLSERVER_ENV_TARBALL; \\
         fi \\
@@ -55,7 +55,8 @@ USER root
 RUN ./hack/build-env.sh . && \\
     mkdir -p ./envs/base && \\
     chown -R 1000:0 ./envs/base && \\
-    chmod -R 776 ./envs/base
+    chmod -R 776 ./envs/base && \\
+    rm -rf /root/.cache/pip
 USER 1000
 
 # Copy everything else
@@ -79,6 +80,10 @@ Dockerignore = """
 *.pyo
 *.pyd
 bin
+
+# MLServer folders
+.metrics
+.envs
 
 # Mac file system
 **/.DS_Store

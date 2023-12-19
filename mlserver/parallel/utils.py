@@ -5,10 +5,7 @@ from asyncio import Task
 from multiprocessing import Queue
 
 from ..settings import Settings
-<<<<<<< HEAD
-=======
 
->>>>>>> tags/1.3.5
 from .logging import logger
 
 END_OF_QUEUE = None

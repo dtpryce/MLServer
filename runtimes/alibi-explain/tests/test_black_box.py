@@ -33,14 +33,10 @@ from mlserver_alibi_explain.common import (
     to_v2_inference_request,
     _DEFAULT_INPUT_NAME,
 )
-<<<<<<< HEAD
-
-=======
 from mlserver_alibi_explain.explainers.black_box_runtime import (
     AlibiExplainBlackBoxRuntime,
 )
 from mlserver_alibi_explain.runtime import AlibiExplainRuntime, AlibiExplainRuntimeBase
->>>>>>> tags/1.3.5
 from .helpers.run_async import run_sync_as_async
 from .helpers.tf_model import get_tf_mnist_model_uri
 
@@ -78,16 +74,11 @@ async def test_predict_impl(
 
     # [batch, image_x, image_y, channel]
     data = np.random.randn(10, 28, 28, 1) * 255
-<<<<<<< HEAD
-    actual_result = await run_sync_as_async(
-        anchor_image_runtime_with_remote_predict_patch._rt._infer_impl, data
-=======
     assert isinstance(
         anchor_image_runtime_with_remote_predict_patch, AlibiExplainBlackBoxRuntime
     )
     actual_result = await run_sync_as_async(
         anchor_image_runtime_with_remote_predict_patch._infer_impl, data
->>>>>>> tags/1.3.5
     )
 
     # now we go via the inference model and see if we get the same results

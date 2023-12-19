@@ -1,10 +1,7 @@
 from multiprocessing import Queue
 
 from mlserver.settings import ModelSettings
-<<<<<<< HEAD
-=======
 from mlserver.codecs import StringCodec
->>>>>>> tags/1.3.5
 from mlserver.parallel.errors import WorkerError
 from mlserver.parallel.worker import Worker
 from mlserver.parallel.messages import ModelUpdateMessage, ModelRequestMessage
@@ -119,8 +116,6 @@ async def test_exception(
     assert response.exception is not None
     assert response.exception.__class__ == WorkerError
     assert str(response.exception) == f"builtins.Exception: {error_msg}"
-<<<<<<< HEAD
-=======
 
 
 async def test_worker_env(

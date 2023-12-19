@@ -19,12 +19,8 @@ from .messages import (
 from .dispatcher import Dispatcher
 
 
-<<<<<<< HEAD
-PredictMethod = Callable[[InferenceRequest], Coroutine[Any, Any, InferenceResponse]]
-=======
 PredictMethod = Callable[[InferenceRequest], Awaitable[InferenceResponse]]
 InferencePoolHook = Callable[[Worker], Awaitable[None]]
->>>>>>> tags/1.3.5
 
 
 class InferencePool:
@@ -111,11 +107,8 @@ class InferencePool:
             worker.join(self._settings.parallel_workers_timeout)
             if worker.exitcode is None:
                 worker.kill()
-<<<<<<< HEAD
-=======
             await asyncio.gather(
                 *[callback(worker) for callback in self._on_worker_stop]
             )
->>>>>>> tags/1.3.5
 
         self._workers.clear()

@@ -36,11 +36,8 @@ setup(
     install_requires=[
         "mlserver",
         "optimum[onnxruntime]>=1.4.0, <1.8.0",
-<<<<<<< HEAD
-=======
         "tensorflow",
         "Pillow",
->>>>>>> tags/1.3.5
     ],
     long_description=_load_description(),
     long_description_content_type="text/markdown",

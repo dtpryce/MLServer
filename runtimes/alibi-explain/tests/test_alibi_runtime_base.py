@@ -23,9 +23,6 @@ from mlserver_alibi_explain.common import (
     AlibiExplainSettings,
 )
 from mlserver_alibi_explain.errors import InvalidExplanationShape
-<<<<<<< HEAD
-
-=======
 from mlserver_alibi_explain.explainers.black_box_runtime import (
     AlibiExplainBlackBoxRuntime,
 )
@@ -33,7 +30,6 @@ from mlserver_alibi_explain.explainers.integrated_gradients import (
     IntegratedGradientsWrapper,
 )
 from mlserver_alibi_explain.runtime import AlibiExplainRuntime, AlibiExplainRuntimeBase
->>>>>>> tags/1.3.5
 from .helpers.run_async import run_async_as_sync, run_sync_as_async
 
 """

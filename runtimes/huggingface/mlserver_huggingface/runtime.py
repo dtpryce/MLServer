@@ -7,28 +7,11 @@ from mlserver.types import (
     InferenceRequest,
     InferenceResponse,
 )
-<<<<<<< HEAD
-from mlserver.codecs import (
-    StringCodec,
-)
-from mlserver_huggingface.common import (
-    HuggingFaceSettings,
-    parse_parameters_from_env,
-    InvalidTranformerInitialisation,
-    load_pipeline_from_settings,
-    NumpyEncoder,
-    SUPPORTED_OPTIMUM_TASKS,
-)
-from mlserver_huggingface.codecs import MultiStringRequestCodec
-from transformers.pipelines import SUPPORTED_TASKS
-from mlserver.logging import logger
-=======
 
 from .settings import get_huggingface_settings
 from .common import load_pipeline_from_settings
 from .codecs import HuggingfaceRequestCodec
 from .metadata import METADATA
->>>>>>> tags/1.3.5
 
 
 class HuggingFaceRuntime(MLModel):

@@ -1,19 +1,10 @@
 import asyncio
 import functools
 import json
-<<<<<<< HEAD
-import asyncio
-import numpy as np
-import functools
-
-from typing import Any, Optional, List, Dict
-
-=======
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Optional, Dict
 
 import numpy as np
->>>>>>> tags/1.3.5
 import pandas as pd
 from alibi.api.interfaces import Explanation, Explainer
 from alibi.saving import load_explainer

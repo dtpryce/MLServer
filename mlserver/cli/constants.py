@@ -64,8 +64,8 @@ COPY . .
 
 # Override MLServer's own `CMD` to activate the embedded environment
 # (optionally activating the hot-loaded one as well).
-CMD source ./hack/activate-env.sh ./envs/base.tar.gz && \\
-    mlserver start $MLSERVER_MODELS_DIR
+#CMD source ./hack/activate-env.sh ./envs/base.tar.gz && \\
+CMD mlserver start $MLSERVER_MODELS_DIR
 """
 
 DockerignoreName = ".dockerignore"

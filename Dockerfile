@@ -53,6 +53,9 @@ RUN microdnf install -y wget && \
     bash "./miniforge3.sh" -b -p $CONDA_PATH && \
     rm ./miniforge3.sh && \
     echo $PATH && \
+    conda config --add channels conda-forge && \
+    conda install conda-libmamba-solver && \
+    conda config --set solver libmamba && \
     conda install --yes \
         conda=$CONDA_VERSION \
         python=$PYTHON_VERSION \
